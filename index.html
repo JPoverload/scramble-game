@@ -117,6 +117,82 @@
 			}
 			document.getElementById("age").value = age;
 		});
+		 var PlayersData = [];
+
+        function register() {
+        // Get the values entered in the form fields
+            var name = document.getElementById("name").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var age = document.getElementById("age").value.trim();
+        
+            // Validate the form fields
+            if (name === "") {
+                alert("Please enter your name.");
+                return false;
+            }
+            if (email === "") {
+                alert("Please enter your email address.");
+                return false;
+            }
+            if (age === "") {
+                alert("Please enter your age.");
+                return false;
+            }
+            if (isNaN(parseInt(age))) {
+                alert("Please enter a valid age.");
+                return false;
+            }
+        
+            // Create a new player object with the validated data
+            var player = {
+                name: name,
+                email: email,
+                age: parseInt(age)
+            };
+        
+            // Add the player object to the global PlayersData array
+            PlayersData.push(player);
+        
+            // Clear the form fields
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("age").value = "";
+        
+            // Return true to allow the form to be submitted
+            return true;
+            }
+
+        // calculate palyer score in percentage
+        function percentage(paratialValue, totalValue){
+            return (100 * paratialValue)/ totalValue;
+        }
+
+        function PlayGame(){
+            myGameArea.start();
+        }
+
+        //create scramble game area on site
+        var myGameArea = {
+            canvas : document.createElement("canvas"),
+            start : function() {
+              this.canvas.width = 480;
+              this.canvas.height = 270;
+              this.context = this.canvas.getContext("2d");
+              document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            }
+        }
+
+        //create game components
+        function components(width, height, color, x, y) {
+            this.width = width;
+            this.height = height;
+            this.x = x;
+            this.y = y;    
+            ctx = myGameArea.context;
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+        
 	</script>
     </fieldset>
   </form>
