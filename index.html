@@ -103,6 +103,7 @@
 		<input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" title="Enter a valid Gmail address"/></br></br>
 
 		<input type="button" value="Register"/>
+		<input type="button" value="PlayGame"/>
 	</form>
 	<script>
 		//Calculate age from Date of Birth
@@ -121,12 +122,17 @@
 
         function register() {
         // Get the values entered in the form fields
-            var name = document.getElementById("name").value.trim();
+            var first_name = document.getElementById("first_name").value.trim();
+            var last_name = document.getElementById("last_name").value.trim();
             var email = document.getElementById("email").value.trim();
             var age = document.getElementById("age").value.trim();
         
             // Validate the form fields
-            if (name === "") {
+            if (first_name === "") {
+                alert("Please enter your name.");
+                return false;
+            }
+            if (last_name === "") {
                 alert("Please enter your name.");
                 return false;
             }
@@ -145,7 +151,7 @@
         
             // Create a new player object with the validated data
             var player = {
-                name: name,
+                name: first_name ,
                 email: email,
                 age: parseInt(age)
             };
