@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scramble Game</title>
+	<style>
+    body 
+    	 {
+        background-color: #f7f7f7;
+        font-family: sans-serif;
+    }
+    
+    canvas 
+    {
+        display: block;
+        margin: 0 auto;
+        background-color: #fff;
+        border: 2px solid #333;
+        width: 500px;
+        height: 300px;
+        margin-top: 50px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 36px;
+    }
+    
+    p {
+        margin-top: 20px;
+        font-size: 18px;
+        text-align: center;
+    }
+    
+    #play-area {
+        font-size: 24px;
+        text-align: center;
+        margin-top: 50px;
+    }
+    
+    #answer-input {
+        display: block;
+        margin: 20px auto;
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #333;
+        width: 80%;
+        max-width: 400px;
+    }
+    
+    #check-answer-btn, #next-round-btn, #play-btn 
+    {
+        display: block;
+        margin: 20px auto;
+        padding: 10px;
+        font-size: 18px;
+        border-radius: 5px;
+        border: 1px solid #333;
+        width: 150px;
+    }
+    
+    #check-answer-btn:hover, #next-round-btn:hover, #play-btn:hover 
+    {
+        background-color: #333;
+        color: #fff;
+    }
+	</style>
+</head>
+<body>
+	<div>
+		<h1>Scramble Game</h1>
+		<p>Guess the word that was scrambled</p>
+		<p id="play-area"></p>
+		<input type="text" id="answer-input" placeholder="Enter your answer" disabled>
+		<button id="check-answer-btn" onclick="checkAnswer()" disabled>Accept</button>
+		<button id="next-round-btn" onclick="nextRound()" disabled>Next</button>
+		<button id="play-btn" onclick="playGame()">Start</button>
+	</div>
+    <script>
+	let characters = "";
+	let allowedChars = "abcdefghijklmnopqrstuvwxyz";
+	let currentWord = "";
+	let playerData = [];
+
+	function playGame() 
+	{
+		characters = "";
+		currentWord = "";
+		let numberOfChars = Math.floor(Math.random() * (6 - 4 + 1)) + 4;
+		for (let i = 0; i < numberOfChars; i++) 
+		{
+			let randomChar = allowedChars.charAt(Math.floor(Math.random() * allowedChars.length));
+			characters += randomChar;
+		}
+		document.getElementById("play-area").textContent = characters;
+		document.getElementById("play-area").disabled = false;
+		document.getElementById("answer-input").disabled = false;
+		document.getElementById("check-answer-btn").disabled = false;
+		document.getElementById("next-round-btn").disabled = true;
+	}
+
+	function checkAnswer() 
+	{
+		let answer = document.getElementById("answer-input").value.trim().toLowerCase();
+		if (answer === "") 
+		{
+			alert("Please enter your answer.");
+			return;
+		}
+		if (answer === currentWord) 
+		{
+			playerData.push(characters, answer, "Correct");
+			alert("Awesome !! The Word Is Correct");
+		} else 
+		{
+			playerData.push(characters, answer, "Wrong");
+			alert("Wrong!");
+		}
+		document.getElementById("answer-input").value = "";
+		document.getElementById("answer-input").disabled = true;
+		document.getElementById("check-answer-btn").disabled = true;
+		document.getElementById("next-round-btn").disabled = false;
+		document.getElementById("play-area").textContent = "";
+	}
+
+	function nextRound() 
+	{
+		document.getElementById("check-answer-btn").disabled = false;
+		document.getElementById("next-round-btn").disabled = true;
+		playGame();
+	}
+    </script>
+</body>
+</html>
