@@ -102,10 +102,10 @@
 		<label for="email">Email:</label>
 		<input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@gmail\.com$"><br>
 
-		<button type="button" name= "RegisterBtn" onclick="Register()">Register</button>
-		<button type="button" id="StartBtn" disabled onclick="PlayGame()" >Start</button>
+		<button type="button" id="RegisterBtn" name= "RegisterBtn" onclick="Register()">Register</button>
+		<a href="PlayArea.html"><button type="button" id="StartBtn" onclick="playGame()" disabled>Start</button></a>
 		<button type="button" id="EndBtn" disabled>End</button>
-		<button type="button" id="AcceptBtn" disabled onclick="CheckGame()">Accept</button>
+		<a href="PlayArea.html"><button type="button" id="AcceptBtn" onclick="checkAnswer()" disabled>Accept</button></a>
 	</div>
 	</fieldset>
 	</form>
@@ -154,6 +154,7 @@
 			PlayersData.push(player);
 
 			alert("Registration successful!");
+			//creates a blank form
 			document.getElementById("firstName").value = "";
 			document.getElementById("lastName").value = "";
 			document.getElementById("dob").value = "";
@@ -169,10 +170,14 @@
 			document.getElementById("email").disabled = true;
 			document.getElementById("age").disabled = true;
 			document.getElementById("RegisterBtn").disabled = true;
+			
 
-			// Enable the End and Start buttons(NOT WORKING)
+			// Enable the End, Start & Accept buttons(NOT WORKING)
 			document.getElementById("StartBtn").disabled=false;
 			document.getElementById("EndBtn").disabled = false;
+			document.getElementById("AcceptBtn").disabled = false;
+			
+			PlayGame();
 		}
 
 		function calculateAge(dob) 
@@ -186,37 +191,6 @@
 			}
 			return age;
 		}
-	
-        // calculate palyer score in percentage
-        function percentage(paratialValue, totalValue){
-            return (100 * paratialValue)/ totalValue;
-        }
-
-        function PlayGame(){
-            myGameArea.start();
-        }
-
-        //create scramble game area on site
-        var myGameArea = {
-            canvas : document.createElement("canvas"),
-            start : function() {
-              this.canvas.width = 480;
-              this.canvas.height = 270;
-              this.context = this.canvas.getContext("2d");
-              document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-            }
-        }
-
-        //create game components
-        function components(width, height, color, x, y) {
-            this.width = width;
-            this.height = height;
-            this.x = x;
-            this.y = y;    
-            ctx = myGameArea.context;
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
-        
-</script>
+	</script>
+</body>
 </html>
