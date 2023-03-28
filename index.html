@@ -1,22 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scramble Game</title>
-  <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+	<title>Scramble Game</title>
+    <meta charset="UTF-8">
 	<style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f2f2f2;
     }
     
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    
-    fieldset {
+    fieldset 
+    {
         border: 1px solid;
         padding: 20px;
         margin: 20px auto;
@@ -63,7 +57,7 @@
         background-color: #fff;
     }
     
-    input[type="submit"] {
+    input[type="button"] {
         display: inline-block;
         background-color: #4CAF50;
         color: #fff;
@@ -74,101 +68,125 @@
         font-size: 16px;
     }
     
-    input[type="submit"]:hover {
+    input[type="button"]:hover 
+    {
         background-color: #3e8e41;
     }
 </style>
 </head>
-  <div style="text-align: center;">
-  <form>
-    <fieldset>
-        <legend>Player Information Form</legend>
-      <form>
-		<lable>First Name:</lable>
-		<input type="text" id="first_name" name="first_name" required minlength="3"></br></br>
 
-		<lable>Last Name:</lable>
-		<input type="text" id="last_name" name="last_name" required minlength="3"></br></br>
+<body>
+    <div style="text-align: center;">
+	<fieldset>
+    <legend>Player Information Form</legend>
+	<form>
+		<label for="firstName">First Name:</label>
+		<input type="text" id="firstName" name="firstName" required minlength="3"><br>
 
-		<lable>Date of Birth:</lable>
-		<input type="date" id="dob" name="dob" required></br></br>
+		<label for="lastName">Last Name:</label>
+		<input type="text" id="lastName" name="lastName" required minlength="3"><br>
 
-		<lable>Age:</lable>
-		<input type="number" id="age" name="age" readonly></br></br>
+		<label for="dob">Date of Birth:</label>
+		<input type="date" id="dob" name="dob" required><br>
 
-		<lable>Gender:</lable>
-		<input type="text" id="gender" name="gender" required></br></br>
+		<label for="age">Age:</label>
+		<input type="number" id="age" name="age" readonly><br>
 
-		<lable>Email:</lable>
-		<input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$" title="Enter a valid Gmail address"/></br></br>
+		<label for="gender">Gender:</label>
+		<select id="gender" name="gender" required>
+			<option value="">Select Gender</option>
+			<option value="male">Male</option>
+			<option value="female">Female</option>
+		</select><br>
 
-		<input type="button" value="Register"/>
-		<input type="button" value="PlayGame"/>
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@gmail\.com$"><br>
+
+		<button type="button" name= "RegisterBtn" onclick="Register()">Register</button>
+		<button type="button" id="StartBtn" disabled onclick="PlayGame()" >Start</button>
+		<button type="button" id="EndBtn" disabled>End</button>
+		<button type="button" id="AcceptBtn" disabled onclick="CheckGame()">Accept</button>
+	</div>
+	</fieldset>
 	</form>
+    
 	<script>
-		//Calculate age from Date of Birth
-		document.getElementById("dob").addEventListener("change", function() 
+		let PlayersData = [];
+
+		function Register() 
 		{
-			let dob = new Date(this.value);
-			let today = new Date();
-			let age = today.getFullYear() - dob.getFullYear();
-			if (today.getMonth() < dob.getMonth() || (today.getMonth() == dob.getMonth() && today.getDate() < dob.getDate())) 
+			let firstName = document.getElementById("firstName").value;
+			let lastName = document.getElementById("lastName").value;
+			let dob = new Date(document.getElementById("dob").value);
+			let age = calculateAge(dob);
+			let gender = document.getElementById("gender").value;
+			let email = document.getElementById("email").value;
+
+			if (firstName.length < 3) {
+				alert("First name must be at least 3 characters long.");
+				return false;
+			}
+
+			if (lastName.length < 3) {
+				alert("Last name must be at least 3 characters long.");
+				return false;
+			}
+
+			if (age < 8 || age > 12) {
+				alert("Age must be between 8 and 12 inclusive.");
+				return false;
+			}
+
+			if (!email.endsWith("@gmail.com")) {
+				alert("Email address must end with '@gmail.com'.");
+				return false;
+			}
+
+			let player = {
+				firstName: firstName,
+				lastName: lastName,
+				dob: dob,
+				age: age,
+				gender: gender,
+				email: email
+			};
+
+			PlayersData.push(player);
+
+			alert("Registration successful!");
+			document.getElementById("firstName").value = "";
+			document.getElementById("lastName").value = "";
+			document.getElementById("dob").value = "";
+			document.getElementById("age").value = "";
+			document.getElementById("gender").value = "";
+			document.getElementById("email").value = "";
+			
+			// Disable all form fields and the Register button
+			document.getElementById("firstName").disabled = true;
+			document.getElementById("lastName").disabled = true;
+			document.getElementById("dob").disabled = true;
+			document.getElementById("gender").disabled = true;
+			document.getElementById("email").disabled = true;
+			document.getElementById("age").disabled = true;
+			document.getElementById("RegisterBtn").disabled = true;
+
+			// Enable the End and Start buttons(NOT WORKING)
+			document.getElementById("StartBtn").disabled=false;
+			document.getElementById("EndBtn").disabled = false;
+		}
+
+		function calculateAge(dob) 
+		{
+			let now = new Date();
+			let age = now.getFullYear() - dob.getFullYear();
+			let monthDiff = now.getMonth() - dob.getMonth();
+			if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < dob.getDate())) 
 			{
 				age--;
 			}
-			document.getElementById("age").value = age;
-		});
-		 var PlayersData = [];
-	///still working on it. task 2, 3, 4 juan
-        function register() {
-        // Get the values entered in the form fields
-            var first_name = document.getElementById("first_name").value.trim();
-            var last_name = document.getElementById("last_name").value.trim();
-            var email = document.getElementById("email").value.trim();
-            var age = document.getElementById("age").value.trim();
-        
-            // Validate the form fields
-            if (first_name === "") {
-                alert("Please enter your name.");
-                return false;
-            }
-            if (last_name === "") {
-                alert("Please enter your name.");
-                return false;
-            }
-            if (email === "") {
-                alert("Please enter your email address.");
-                return false;
-            }
-            if (age === "") {
-                alert("Please enter your age.");
-                return false;
-            }
-            if (isNaN(parseInt(age))) {
-                alert("Please enter a valid age.");
-                return false;
-            }
-        
-            // Create a new player object with the validated data
-            var player = {
-                name: first_name ,
-                email: email,
-                age: parseInt(age)
-            };
-        
-            // Add the player object to the global PlayersData array
-            PlayersData.push(player);
-        
-            // Clear the form fields
-            document.getElementById("first_name").value = "";
-            document.getElementById("last_name").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("age").value = "";
-        
-            // Return true to allow the form to be submitted
-            return true;
-            }
-
+			return age;
+		}
+	
         // calculate palyer score in percentage
         function percentage(paratialValue, totalValue){
             return (100 * paratialValue)/ totalValue;
@@ -200,7 +218,5 @@
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
         
-	</script>
-    </fieldset>
-  </form>
+</script>
 </html>
